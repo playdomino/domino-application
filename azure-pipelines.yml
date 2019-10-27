@@ -22,13 +22,17 @@ steps:
     command: 'test'
     projects: './src/*/*.*.Test.csproj'
     arguments: '--configuration $(buildConfiguration)'
-
-- task: Docker@2
+- task: Bash@3
   displayName: Docker Login
   inputs:
-    command: 'login'
-    containerRegistry: dockerhub
-
+    targetType: 'inline'
+    script: |
+      docker login docker.pkg.github.com --username bryht
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker tag domino-application docker.pkg.github.com/playdomino/domino-application/domino-application:dev
 - task: Docker@2
   displayName: Docker Build and Push API
   inputs:
@@ -37,4 +41,11 @@ steps:
     Dockerfile: './src/DominoApplication.Api/Dockerfile'
     buildContext: 'domino-application'
     tags: 'dev'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      $ docker push docker.pkg.github.com/playdomino/domino-application/domino-application:dev
+
+
 
