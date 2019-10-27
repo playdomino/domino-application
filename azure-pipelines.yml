@@ -33,7 +33,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      docker build -t docker.pkg.github.com/playdomino/domino-application/domino-application:dev -f ./src/DominoApplication.Api/Dockerfile
+      docker build -t docker.pkg.github.com/playdomino/domino-application/domino-application:dev -f ./src/DominoApplication.Api/Dockerfile .
 - task: Bash@3
   displayName: Docker Publish
   inputs:
