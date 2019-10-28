@@ -32,9 +32,9 @@ steps:
   displayName: Docker Build
   inputs:
     targetType: 'inline'
-    workingDirectory: './src/DominoApplication.Api'
+    workingDirectory: './src'
     script: |
-      docker build -t docker.pkg.github.com/playdomino/domino-application/domino-application:dev .
+      docker build -t docker.pkg.github.com/playdomino/domino-application/domino-application:dev -f './DominoApplication.Api/Dockerfile' .
 - task: Bash@3
   displayName: Docker Publish
   inputs:
