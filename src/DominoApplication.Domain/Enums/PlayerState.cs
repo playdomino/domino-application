@@ -6,7 +6,8 @@ namespace DominoApplication.Domain.Enums
 {
     public enum PlayerState
     {
-        Waiting = 0,
-        Confirmed = 1
+        Waiting,
+        Confirmed,
+        Playing
     }
 }

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\DominoApplication.Persistence\DominoApplication.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using DominoApplication.Api.Filter;
 using DominoApplication.Application.Infrastructure;
+using DominoApplication.Domain.Entities;
 using DominoApplication.Persistence;
+using DominoApplication.Persistence.Initializer;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mongo.Migration.Startup.DotNetCore;
 
 namespace DominoApplication.Api
 {
@@ -30,10 +33,22 @@ namespace DominoApplication.Api
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             // Add DbContext
-            services.AddDbContext<DataBaseContext>(options =>
+            services.AddSingleton(new MongoDbSettings
             {
-                options.UseSqlite("Data Source=dominoapplication.db");
+                ServerUrl = Configuration.GetConnectionString("Games"),
+                Database = Const.DataBase,
             });
+            services.AddScoped<IMongoDbContext, MongoDbContext>();
+            services.Configure<MongoMigrationSettings>(options =>
+            {
+                using (var provider = services.BuildServiceProvider())
+                {
+                    var setting = provider.GetService<MongoDbSettings>();
+                    options.ConnectionString = setting.ConnectionString();
+                    options.Database = setting.Database;
+                }
+            });
+            services.AddMigration();
 
             // Add document
             services.AddOpenApiDocument(document =>
@@ -51,13 +66,13 @@ namespace DominoApplication.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddTransient<DbInitializer>();
+            services.AddTransient<DbContextInitializer>();
 
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbInitializer dbInitializer)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, DbContextInitializer dbInitializer)
         {
             dbInitializer.Initial();
 

@@ -11,12 +11,7 @@ namespace DominoApplication.Domain.Entities
         public Guid Avatar { get; set; }
         public PlayerState PlayerState { get; set; }
         public PlayerRole PlayerRole { get; set; }
-        public int CurrentPoints { get; set; }
-        public int CurrentThrowTimes { get; set; }
         public int Order { get; set; }
-        public bool IsPlaying { get; set; }
-        public List<GamePlayer> GamePlayers { get; set; }
-
 
     }
 }

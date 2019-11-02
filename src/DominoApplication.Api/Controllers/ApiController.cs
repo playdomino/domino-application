@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DominoApplication.Application.Commands;
-using DominoApplication.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,19 +23,7 @@ namespace DominoApplication.Api.Controllers
             return new string[] { "api-version-16" };
         }
 
-        [HttpGet("game")]
-        public async Task<IActionResult> GetGames()
-        {
-            return Ok(await mediator.Send(new GetGamesQuery()));
-        }
-        [HttpGet("game/{id}")]
-        public async Task<IActionResult> Game(Guid id)
-        {
-            return Ok(await mediator.Send(new GetGameByIdQuery()
-            {
-                Id = id
-            }));
-        }
+        
         [HttpPost("game")]
         public async Task Game(CreateGameCommand value)
         {

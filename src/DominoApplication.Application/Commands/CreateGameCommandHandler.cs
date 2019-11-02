@@ -9,11 +9,11 @@ namespace DominoApplication.Application.Commands
 {
     public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, Guid>
     {
-        private readonly DataBaseContext dataBaseContext;
+        private readonly IMongoDbContext dbContext;
 
-        public CreateGameCommandHandler(DataBaseContext dataBaseContext)
+        public CreateGameCommandHandler(IMongoDbContext dbContext)
         {
-            this.dataBaseContext = dataBaseContext;
+            this.dbContext = dbContext;
         }
 
         public async Task<Guid> Handle(CreateGameCommand request, CancellationToken cancellationToken)
@@ -23,9 +23,7 @@ namespace DominoApplication.Application.Commands
                 Id = Guid.NewGuid(),
                 RoomNumber = request.RoomNumber
             };
-
-            dataBaseContext.Add(game);
-            await dataBaseContext.SaveChangesAsync();
+            await dbContext.GameCollection.InsertOneAsync(game);
             return game.Id;
         }
     }
