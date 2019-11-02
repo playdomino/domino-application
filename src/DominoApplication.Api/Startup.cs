@@ -67,7 +67,8 @@ namespace DominoApplication.Api
             });
 
             services.AddTransient<DbContextInitializer>();
-
+           
+            services.AddSignalR();
 
         }
 
@@ -92,6 +93,12 @@ namespace DominoApplication.Api
 
             app.UseSwagger();
             app.UseSwaggerUi3();
+
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ObjectMoveHub>("/objectMove");
+            });
 
             app.UseMvc(routes =>
             {
