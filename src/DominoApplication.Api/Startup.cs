@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using DominoApplication.Api.Filter;
+using DominoApplication.Application.Hubs;
 using DominoApplication.Application.Infrastructure;
 using DominoApplication.Domain.Entities;
 using DominoApplication.Persistence;
@@ -98,6 +99,7 @@ namespace DominoApplication.Api
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ObjectMoveHub>("/objectMove");
+                routes.MapHub<RoomHub>("/room");
             });
 
             app.UseMvc(routes =>
