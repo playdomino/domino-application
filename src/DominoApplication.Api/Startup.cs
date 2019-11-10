@@ -95,7 +95,12 @@ namespace DominoApplication.Api
             app.UseSwagger();
             app.UseSwaggerUi3();
 
-
+            app.UseCors(builder => {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+                builder.AllowCredentials();
+            });
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ObjectMoveHub>("/objectMove");
